@@ -93,14 +93,22 @@ pipeline{
                 script {
                     def customImage = docker.build("my-docker-image:${params.ImageTag}")
                     
-                    customImage.inside {
-                        // Exécutez les commandes à l'intérieur du conteneur Docker (optionnel)
+                    // Utilisez les credentials Docker Hub
+                    withCredentials([usernamePassword(credentialsId: 'sdiawa', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                        // Connexion à Docker Hub
+                        sh "docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD"
+                        
+                        // Poussez l'image avec le tag spécifié
+                        sh "docker push my-docker-image:${params.ImageTag}"
                     }
 
-                    customImage.push()
+                    // Exécutez des commandes à l'intérieur du conteneur Docker (optionnel)
+                    customImage.inside {
+                        // ...
+                    }
                 }
             }
-        }     
+        }  
 
    }
 }
