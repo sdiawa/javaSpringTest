@@ -116,5 +116,14 @@ pipeline{
                 }
             }
         }
+        stage('Docker Image CleanUp: CleanUp dockerhub') {
+            when { expression{ params.action == 'create'  } }
+            steps{
+               script{        
+
+                  dockerImageCleanup()
+                }
+            }
+        }
    }
 }
