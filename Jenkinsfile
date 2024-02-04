@@ -98,6 +98,15 @@ pipeline{
                 }
             }
         }
+        stage('Docker Scan Image: trivy') {
+            when { expression{ params.action == 'create'  } }
+            steps{
+               script{        
+
+                  dockerImageScan()
+                }
+            }
+        }
 
        /* stage('Build Docker Image') {
             when { expression{ params.action == 'create' } }
