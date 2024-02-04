@@ -98,8 +98,11 @@ pipeline{
                         // Connexion à Docker Hub
                         sh "docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD"
                         
+                        // Ajoutez la commande docker tag
+                        sh "docker tag my-docker-image:${params.ImageTag} $DOCKERHUB_USERNAME/my-docker-image:${params.ImageTag}"
+                        
                         // Poussez l'image avec le tag spécifié
-                        sh "docker push my-docker-image:${params.ImageTag}"
+                        sh "docker $DOCKERHUB_USERNAME/push my-docker-image:${params.ImageTag}"
                     }
 
                     // Exécutez des commandes à l'intérieur du conteneur Docker (optionnel)
@@ -108,7 +111,8 @@ pipeline{
                     }
                 }
             }
-        }  
+        }
+
 
    }
 }
