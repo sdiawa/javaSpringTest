@@ -103,7 +103,7 @@ pipeline{
                        // docker tag my-docker-image:v1 sdiawar/my-docker-image:v1
                         
                         // Poussez l'image avec le tag spécifié
-                        sh "docker $DOCKERHUB_USERNAME/push my-docker-image:${params.ImageTag}"
+                        sh "docker push $DOCKERHUB_USERNAME/my-docker-image:${params.ImageTag}"
                     }
 
                     // Exécutez des commandes à l'intérieur du conteneur Docker (optionnel)
