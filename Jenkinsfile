@@ -107,6 +107,16 @@ pipeline{
                 }
             }
         }
+        stage('Docker push Image: dockerhub') {
+            when { expression{ params.action == 'create'  } }
+            steps{
+               script{        
+
+                  dockerImagePush()
+                }
+            }
+        }
+        
 
        /* stage('Build Docker Image') {
             when { expression{ params.action == 'create' } }
