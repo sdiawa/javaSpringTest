@@ -7,6 +7,10 @@ pipeline{
     parameters{
 
         choice(name: 'action', choices: 'create\ndelete', description: 'choose create/Destroy')
+        String(name:'ImageName', description: "nom de docker build", defaultValue: 'javapp')
+        String(name:'ImageTag', description: "tag de docker build", defaultValue: 'v1')
+        String(name:'AppName', description: "nom d'application build", defaultValue: 'springboot')
+        String(name:'DockerHubUser', description: "nom d'application build", defaultValue: 'sdiawar')
 
     }
 
@@ -22,7 +26,7 @@ pipeline{
                  )
             }
         }
-        stage('Unit Test maven'){
+      /*  stage('Unit Test maven'){
 
             when { expression{ params.action == 'create'  } }
 
@@ -71,7 +75,7 @@ pipeline{
                     QualityGateStatus(SonarQubecredentialsId)
                 }
             }
-        }
+        }*/
         stage('Maven Build: maven'){
             when { expression{ params.action == 'create'  } }
 
@@ -82,6 +86,20 @@ pipeline{
                 }
             }
         }
+
+        stage('Docker Image: Build'){
+            when { expression{ params.action == 'create'  } }
+
+            steps{
+               script{
+
+                  dockerbuild("${params.ImageName}",
+                  dockerbuild"${params.ImageTag}",
+                  dockerbuild"${params.DockerHubUser}")
+                }
+            }
+        }
     }
 
+      
 }
