@@ -8,7 +8,7 @@ pipeline{
 
         choice(name: 'action', choices: 'create\ndelete', description: 'choose create/Destroy')
         //string(name:'ImageName', description: "nom de docker build", defaultValue: 'javapp')
-      //  string(name:'ImageTag', description: "tag de docker build", defaultValue: 'v1')
+        string(name:'ImageTag', description: "tag de docker build", defaultValue: 'v1')
       //  string(name:'AppName', description: "nom d'application build", defaultValue: 'springboot')
        // string(name:'DockerHubUser', description: "nom d'application build", defaultValue: 'sdiawar')
 
@@ -87,20 +87,20 @@ pipeline{
             }
         }
 
-       stage('Build Docker Image') {
-            when { expression{ params.action == 'create'  } }
+        stage('Build Docker Image') {
+            when { expression{ params.action == 'create' } }
             steps {
                 script {
-                    def customImage = docker.build("toott")
+                    def customImage = docker.build("my-docker-image:${params.ImageTag}")
                     
                     customImage.inside {
                         // Exécutez les commandes à l'intérieur du conteneur Docker (optionnel)
                     }
 
- 
+                    customImage.push()
                 }
             }
-        }
+        }     
 
-      
-}}
+   }
+}
