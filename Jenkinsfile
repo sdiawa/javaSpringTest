@@ -11,6 +11,8 @@ pipeline{
         string(name:'ImageTag', description: "tag de docker build", defaultValue: 'v1')
       //  string(name:'AppName', description: "nom d'application build", defaultValue: 'springboot')
         string(name:'DockerHubUser', description: "nom d'application build", defaultValue: 'sdiawar')
+        string(name:'DockerHubCredentialsId', description: "DockerHub CredentialsId", defaultValue: 'sdiawa')
+        
 
     }
 
@@ -88,6 +90,16 @@ pipeline{
         }
 
         stage('Build Docker Image') {
+            when { expression{ params.action == 'create'  } }
+            steps{
+               script{        
+
+                  dockerBuild()
+                }
+            }
+        }
+
+       /* stage('Build Docker Image') {
             when { expression{ params.action == 'create' } }
             steps {
                 script {
@@ -112,7 +124,7 @@ pipeline{
                     }
                 }
             }
-        }
+        }*/
 
 
    }
