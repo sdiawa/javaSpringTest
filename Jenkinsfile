@@ -87,17 +87,20 @@ pipeline{
             }
         }
 
-        stage('Docker Image: Build'){
-            when { expression{ params.action == 'create'  } }
+       stage('Build Docker Image') {
+            steps {
+                script {
+                    def customImage = docker.build("${hubUser}/${project}")
+                    
+                    customImage.inside {
+                        // Exécutez les commandes à l'intérieur du conteneur Docker (optionnel)
+                    }
 
-            steps{
-               script{
-
-                  dockerbuild("${params.ImageName}", "${params.ImageTag}", "${params.AppName}")
+                    customImage.push("${hubUser}/${project}:${ImageTag}")
+                    customImage.push("${hubUser}/${project}:latest")
                 }
             }
         }
-    }
 
       
 }
