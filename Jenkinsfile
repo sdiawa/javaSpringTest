@@ -39,7 +39,6 @@ pipeline{
                     mvnTest()
 
                 }
-
                  
             }
         }
@@ -49,7 +48,6 @@ pipeline{
 
             steps{
                script{
-
 
                     mvnIntegrationTest()
 
