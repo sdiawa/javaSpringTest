@@ -7,10 +7,10 @@ pipeline{
     parameters{
 
         choice(name: 'action', choices: 'create\ndelete', description: 'choose create/Destroy')
-        //string(name:'ImageName', description: "nom de docker build", defaultValue: 'javapp')
+        string(name:'ImageName', description: "nom de docker build", defaultValue: 'javapp')
         string(name:'ImageTag', description: "tag de docker build", defaultValue: 'v1')
       //  string(name:'AppName', description: "nom d'application build", defaultValue: 'springboot')
-       // string(name:'DockerHubUser', description: "nom d'application build", defaultValue: 'sdiawar')
+        string(name:'DockerHubUser', description: "nom d'application build", defaultValue: 'sdiawar')
 
     }
 
@@ -91,7 +91,7 @@ pipeline{
             when { expression{ params.action == 'create' } }
             steps {
                 script {
-                    def customImage = docker.build("my-docker-image:${params.ImageTag}")
+                    def customImage = docker.build("${params.ImageName}:${params.ImageTag}")
                     
                     // Utilisez les credentials Docker Hub
                     withCredentials([usernamePassword(credentialsId: 'sdiawa', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
@@ -99,11 +99,11 @@ pipeline{
                         sh "docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD"
                         
                         // Ajoutez la commande docker tag
-                        sh "docker tag my-docker-image:${params.ImageTag} $DOCKERHUB_USERNAME/my-docker-image:${params.ImageTag}"
-                       // docker tag my-docker-image:v1 sdiawar/my-docker-image:v1
+                        sh "docker tag ${params.ImageName}:${params.ImageTag} ${params.DockerHubUser}/${params.ImageName}:${params.ImageTag}"
+                       // docker tag ${params.ImageName}:v1 sdiawar/${params.ImageName}:v1
                         
                         // Poussez l'image avec le tag spécifié
-                        sh "docker push $DOCKERHUB_USERNAME/my-docker-image:${params.ImageTag}"
+                        sh "docker push ${params.DockerHubUser}/${params.ImageName}:${params.ImageTag}"
                     }
 
                     // Exécutez des commandes à l'intérieur du conteneur Docker (optionnel)
