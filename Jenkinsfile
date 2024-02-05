@@ -9,7 +9,8 @@ pipeline{
         choice(name: 'action', choices: 'create\ndelete', description: 'choose create/Destroy')
         string(name:'ImageName', description: "nom de docker build", defaultValue: 'javapp')
         string(name:'ImageTag', description: "tag de docker build", defaultValue: 'v1')
-      //  string(name:'AppName', description: "nom d'application build", defaultValue: 'springboot')
+        string(name:'PortApp', description: "nom d'application build", defaultValue: '8080:8081')
+        string(name:'AppName', description: "nom d'application build", defaultValue: 'springboot')
         string(name:'DockerHubUser', description: "nom d'application build", defaultValue: 'sdiawar')
         string(name:'DockerHubCredentialsId', description: "DockerHub CredentialsId", defaultValue: 'sdiawa')
         
@@ -111,6 +112,15 @@ pipeline{
                script{        
 
                   dockerImagePush()
+                }
+            }
+        }
+           stage('Run Docker Container : Run') {
+            when { expression{ params.action == 'create'  } }
+            steps{
+               script{        
+
+                  dockerRun()
                 }
             }
         }
