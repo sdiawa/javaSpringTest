@@ -7,12 +7,12 @@ pipeline{
     parameters{
 
         choice(name: 'action', choices: 'create\ndelete', description: 'choose create/Destroy')
-        string(name:'ImageName', description: "nom de docker build", defaultValue: 'javapp')
-        string(name:'ImageTag', description: "tag de docker build", defaultValue: 'v1')
-        string(name:'PortApp', description: "nom d'application build", defaultValue: '8080:8081')
-        string(name:'AppName', description: "nom d'application build", defaultValue: 'springboot')
-        string(name:'DockerHubUser', description: "nom d'application build", defaultValue: 'sdiawar')
-        string(name:'DockerHubCredentialsId', description: "DockerHub CredentialsId", defaultValue: 'sdiawa')
+        string(name:'ImageName', description: "Entrez : le nom de docker image à builder", defaultValue: 'javapp')
+        string(name:'ImageTag', description: "Entrez : le tag de docker image à builder", defaultValue: 'v1')
+        string(name:'PortApp', description: "Entrez : le port ", defaultValue: '8081:8080')
+        string(name:'AppName', description: "Entrez : le nom d'application ", defaultValue: 'springboot')
+        string(name:'DockerHubUser', description: "Entrez : le user du repot DockerHub ", defaultValue: 'sdiawar')
+        string(name:'DockerHubCredentialsId', description: "Entrez : le DockerHub CredentialsId", defaultValue: 'sdiawa')
         
 
     }
